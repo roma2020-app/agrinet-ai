@@ -1,0 +1,126 @@
+{
+  "agriculture_schemes": [
+    {
+      "scheme_id": "IN-PM-KISAN",
+      "country_code": "IN",
+      "country": "India",
+      "scheme_name": "PM-KISAN",
+      "category": "Farmer Income Support",
+      "description": "Income support scheme for eligible farmer families.",
+      "eligibility": [
+        "Eligible agricultural landholding farmer families",
+        "Subject to applicable government eligibility rules"
+      ],
+      "benefits": [
+        "Direct income support",
+        "Financial assistance for agricultural activities"
+      ],
+      "languages": [
+        "Hindi",
+        "English"
+      ],
+      "status": "Reference Information"
+    },
+    {
+      "scheme_id": "IN-PMFBY",
+      "country_code": "IN",
+      "country": "India",
+      "scheme_name": "Pradhan Mantri Fasal Bima Yojana",
+      "category": "Crop Insurance",
+      "description": "Crop insurance support for eligible farmers against specified crop losses.",
+      "eligibility": [
+        "Farmers growing notified crops",
+        "Subject to applicable insurance and government rules"
+      ],
+      "benefits": [
+        "Crop risk protection",
+        "Insurance support against eligible crop losses"
+      ],
+      "languages": [
+        "Hindi",
+        "English"
+      ],
+      "status": "Reference Information"
+    },
+    {
+      "scheme_id": "BR-PRONAF",
+      "country_code": "BR",
+      "country": "Brazil",
+      "scheme_name": "PRONAF",
+      "category": "Family Farming",
+      "description": "Brazilian agricultural support framework for eligible family farmers.",
+      "eligibility": [
+        "Eligible family farming producers",
+        "Subject to Brazilian program requirements"
+      ],
+      "benefits": [
+        "Agricultural financing",
+        "Support for family farming activities"
+      ],
+      "languages": [
+        "Portuguese"
+      ],
+      "status": "Reference Information"
+    },
+    {
+      "scheme_id": "ZA-FAMP",
+      "country_code": "ZA",
+      "country": "South Africa",
+      "scheme_name": "Farmer Support Programme",
+      "category": "Agricultural Support",
+      "description": "Reference agricultural support programme for eligible farming communities.",
+      "eligibility": [
+        "Eligible farmers and farming communities",
+        "Subject to applicable South African programme requirements"
+      ],
+      "benefits": [
+        "Agricultural support",
+        "Farming productivity assistance"
+      ],
+      "languages": [
+        "English"
+      ],
+      "status": "Reference Information"
+    },
+    {
+      "scheme_id": "RU-AGRI-SUPPORT",
+      "country_code": "RU",
+      "country": "Russia",
+      "scheme_name": "Agricultural Producer Support",
+      "category": "Agricultural Support",
+      "description": "Reference category for agricultural producer support programmes in Russia.",
+      "eligibility": [
+        "Eligible agricultural producers",
+        "Subject to applicable Russian agricultural regulations"
+      ],
+      "benefits": [
+        "Agricultural production support",
+        "Potential financing and development assistance"
+      ],
+      "languages": [
+        "Russian"
+      ],
+      "status": "Reference Information"
+    },
+    {
+      "scheme_id": "CN-AGRI-SUPPORT",
+      "country_code": "CN",
+      "country": "China",
+      "scheme_name": "Agricultural Producer Support",
+      "category": "Agricultural Support",
+      "description": "Reference category for agricultural support programmes available to eligible producers in China.",
+      "eligibility": [
+        "Eligible agricultural producers",
+        "Subject to applicable Chinese agricultural policies"
+      ],
+      "benefits": [
+        "Agricultural production support",
+        "Sustainable farming assistance"
+      ],
+      "languages": [
+        "Chinese"
+      ],
+      "status": "Reference Information"
+    }
+  ]
+}

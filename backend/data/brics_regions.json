@@ -1,0 +1,67 @@
+{
+  "IN": {
+    "country": "India",
+    "country_name": "India",
+    "region": "Jaipur",
+    "language": "Hindi",
+    "currency": "INR",
+    "crops": [
+      "Wheat",
+      "Millet",
+      "Mustard",
+      "Pulses"
+    ]
+  },
+  "BR": {
+    "country": "Brazil",
+    "country_name": "Brazil",
+    "region": "Mato Grosso",
+    "language": "Portuguese",
+    "currency": "BRL",
+    "crops": [
+      "Soybean",
+      "Maize",
+      "Beans",
+      "Sorghum"
+    ]
+  },
+  "RU": {
+    "country": "Russia",
+    "country_name": "Russia",
+    "region": "Krasnodar",
+    "language": "Russian",
+    "currency": "RUB",
+    "crops": [
+      "Wheat",
+      "Barley",
+      "Sunflower",
+      "Rapeseed"
+    ]
+  },
+  "CN": {
+    "country": "China",
+    "country_name": "China",
+    "region": "Heilongjiang",
+    "language": "Chinese",
+    "currency": "CNY",
+    "crops": [
+      "Rice",
+      "Maize",
+      "Soybean",
+      "Wheat"
+    ]
+  },
+  "ZA": {
+    "country": "South Africa",
+    "country_name": "South Africa",
+    "region": "Free State",
+    "language": "English",
+    "currency": "ZAR",
+    "crops": [
+      "Maize",
+      "Sorghum",
+      "Sunflower",
+      "Wheat"
+    ]
+  }
+}
