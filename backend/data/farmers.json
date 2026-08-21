@@ -1,0 +1,143 @@
+{
+  "farmers": [
+    {
+      "farmer_id": "farmer001",
+      "name": "Ravi Kumar",
+      "country_code": "IN",
+      "country": "India",
+      "language": "Hindi",
+      "region": "Jaipur",
+      "state": "Rajasthan",
+      "district": "Jaipur",
+      "crop": "Wheat",
+      "crops": [
+        "Wheat"
+      ],
+      "land_size": 5,
+      "land_unit": "acre",
+      "irrigation_type": "Canal",
+      "season": "Rabi",
+      "soil": {
+        "ph": 7.8,
+        "nitrogen": "Low",
+        "phosphorus": "Medium",
+        "potassium": "Medium",
+        "organic_carbon": "Low",
+        "moisture": 32.5
+      },
+      "last_interaction": "2026-08-20T10:30:00"
+    },
+    {
+      "farmer_id": "farmer002",
+      "name": "Carlos Silva",
+      "country_code": "BR",
+      "country": "Brazil",
+      "language": "Portuguese",
+      "region": "Mato Grosso",
+      "state": "Mato Grosso",
+      "district": "Sorriso",
+      "crop": "Soybean",
+      "crops": [
+        "Soybean",
+        "Corn"
+      ],
+      "land_size": 12,
+      "land_unit": "hectare",
+      "irrigation_type": "Rainfed",
+      "season": "Summer",
+      "soil": {
+        "ph": 6.2,
+        "nitrogen": "Medium",
+        "phosphorus": "Medium",
+        "potassium": "Low",
+        "organic_carbon": "Medium",
+        "moisture": 48.2
+      },
+      "last_interaction": "2026-08-20T10:45:00"
+    },
+    {
+      "farmer_id": "farmer003",
+      "name": "Thabo Mokoena",
+      "country_code": "ZA",
+      "country": "South Africa",
+      "language": "English",
+      "region": "Free State",
+      "state": "Free State",
+      "district": "Mangaung",
+      "crop": "Maize",
+      "crops": [
+        "Maize",
+        "Wheat"
+      ],
+      "land_size": 8,
+      "land_unit": "hectare",
+      "irrigation_type": "Drip",
+      "season": "Summer",
+      "soil": {
+        "ph": 6.8,
+        "nitrogen": "Medium",
+        "phosphorus": "Low",
+        "potassium": "Medium",
+        "organic_carbon": "Medium",
+        "moisture": 41.7
+      },
+      "last_interaction": "2026-08-20T11:00:00"
+    },
+    {
+      "farmer_id": "farmer004",
+      "name": "Sergei Ivanov",
+      "country_code": "RU",
+      "country": "Russia",
+      "language": "Russian",
+      "region": "Krasnodar",
+      "state": "Krasnodar Krai",
+      "district": "Krasnodar",
+      "crop": "Wheat",
+      "crops": [
+        "Wheat",
+        "Barley"
+      ],
+      "land_size": 20,
+      "land_unit": "hectare",
+      "irrigation_type": "Rainfed",
+      "season": "Spring",
+      "soil": {
+        "ph": 6.7,
+        "nitrogen": "Medium",
+        "phosphorus": "Medium",
+        "potassium": "High",
+        "organic_carbon": "Medium",
+        "moisture": 38.9
+      },
+      "last_interaction": "2026-08-20T11:15:00"
+    },
+    {
+      "farmer_id": "farmer005",
+      "name": "Li Wei",
+      "country_code": "CN",
+      "country": "China",
+      "language": "Chinese",
+      "region": "Henan",
+      "state": "Henan",
+      "district": "Zhengzhou",
+      "crop": "Rice",
+      "crops": [
+        "Rice",
+        "Wheat"
+      ],
+      "land_size": 3,
+      "land_unit": "hectare",
+      "irrigation_type": "Canal",
+      "season": "Summer",
+      "soil": {
+        "ph": 6.5,
+        "nitrogen": "High",
+        "phosphorus": "Medium",
+        "potassium": "Medium",
+        "organic_carbon": "Medium",
+        "moisture": 61.4
+      },
+      "last_interaction": "2026-08-20T11:30:00"
+    }
+  ]
+}
