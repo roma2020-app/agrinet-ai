@@ -51,7 +51,7 @@ app.add_middleware(
         # ----------------------------------------------------
         "http://localhost:3000",
         "http://127.0.0.1:3000",
-        "http://localhost:3001",
+        "https://agrinet-ai-frontend.onrender.com",
         "http://localhost:8501",
         "http://127.0.0.1:8501",
 
