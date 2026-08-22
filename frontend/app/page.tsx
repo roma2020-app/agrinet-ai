@@ -784,80 +784,51 @@ export default function Home() {
   };
 
   // ==========================================================
-  // DIAGNOSE CROP DISEASE
-  // ==========================================================
+// DIAGNOSE CROP DISEASE
+// ==========================================================
 
-  const handleDiagnosis = async () => {
-    if (!selectedImage) {
-      setDiagnosisError(
+const handleDiagnosis = async () => {
+  if (!selectedImage) {
+    setDiagnosisError(
+      languageText.imageError
+    );
+    return;
+  }
+
+  setDiagnosisLoading(true);
+  setDiagnosisError("");
+  setDiagnosisResult(null);
+
+  try {
+    // ========================================================
+    // diagnoseCropDisease() now returns DiseaseDiagnosis
+    // directly.
+    //
+    // No need for:
+    // response.result
+    // response.diagnosis
+    // response
+    //
+    // This fixes the TypeScript union error.
+    // ========================================================
+
+    const diagnosis =
+      await diagnoseCropDisease(
+        selectedImage,
+        request.language,
+        request.country_code
+      );
+
+    setDiagnosisResult(diagnosis);
+  } catch (err: any) {
+    setDiagnosisError(
+      err?.message ||
         languageText.imageError
-      );
-
-      return;
-    }
-
-    setDiagnosisLoading(true);
-    setDiagnosisError("");
-    setDiagnosisResult(null);
-
-    try {
-      /*
-       * Send:
-       * 1. image
-       * 2. selected farmer language
-       * 3. selected country
-       *
-       * This makes the disease screening
-       * cross-border and multilingual.
-       */
-
-      const response =
-        await diagnoseCropDisease(
-          selectedImage,
-          request.language,
-          request.country_code
-        );
-
-      /*
-       * Backend response:
-       *
-       * {
-       *   success: true,
-       *   service: "...",
-       *   country: "IN",
-       *   language: "Hindi",
-       *   result: {
-       *      crop,
-       *      possible_condition,
-       *      confidence,
-       *      severity,
-       *      image_quality,
-       *      visible_symptoms,
-       *      likely_cause,
-       *      recommended_next_steps,
-       *      expert_needed,
-       *      summary,
-       *      summary_hindi
-       *   }
-       * }
-       */
-
-      const diagnosis =
-        response?.result ||
-        response;
-
-      setDiagnosisResult(
-        diagnosis
-      );
-    } catch (err: any) {
-      setDiagnosisError(
-        err?.message ||
-          languageText.imageError
-      );
-    } finally {
-      setDiagnosisLoading(false);
-    }
-  };
+    );
+  } finally {
+    setDiagnosisLoading(false);
+  }
+};
 
   // ==========================================================
   // CURRENT FARMER
