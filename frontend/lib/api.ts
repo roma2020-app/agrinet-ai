@@ -36,13 +36,9 @@ export interface AgricultureRequest {
   region: string;
   farmer_id: string;
   crop: string;
-
   soil: SoilData;
-
   weather: WeatherData;
-
   satellite: SatelliteData;
-
   language: string;
 }
 
@@ -52,25 +48,15 @@ export interface AgricultureRequest {
 
 export interface Advisory {
   crop_condition: string;
-
   weather_risk: string;
-
   soil_health: string;
-
   vegetation_health: string;
-
   irrigation_recommendation: string;
-
   regenerative_farming: string[];
-
   immediate_actions: string[];
-
   overall_risk: "low" | "medium" | "high";
-
   data_driven_reasoning: string;
-
   summary: string;
-
   error?: string;
 }
 
@@ -80,21 +66,13 @@ export interface Advisory {
 
 export interface AdvisoryResponse {
   success: boolean;
-
   network: string;
-
   service?: string;
-
   country: string;
-
   country_code: string;
-
   region: string;
-
   farmer_id: string;
-
   crop: string;
-
   language: string;
 
   data_sources: {
@@ -125,18 +103,13 @@ export interface AdvisoryResponse {
     farmer_id: string;
     crop: string;
     language: string;
-
     soil: SoilData;
-
     weather: WeatherData;
-
     satellite: SatelliteData;
   };
 
   soil?: SoilData;
-
   weather?: WeatherData;
-
   satellite?: SatelliteData;
 
   ai_advisory: Advisory;
@@ -191,20 +164,35 @@ export interface DiseaseDiagnosis {
 // ============================================================
 // DISEASE DIAGNOSIS RESPONSE
 //
-// MUST MATCH diagnose_crop_disease() RETURN FORMAT
+// Backend response:
+//
+// {
+//   success: true,
+//   service: "...",
+//   country: "IN",
+//   language: "Hindi",
+//   result: {
+//     crop: "...",
+//     possible_condition: "...",
+//     confidence: "...",
+//     severity: "...",
+//     image_quality: "...",
+//     visible_symptoms: [],
+//     likely_cause: "...",
+//     recommended_next_steps: [],
+//     expert_needed: false,
+//     summary: "...",
+//     summary_hindi: "..."
+//   }
+// }
 // ============================================================
 
 export interface DiseaseDiagnosisResponse {
   success: boolean;
-
   service?: string;
-
   country?: string;
-
   language?: string;
-
   result?: DiseaseDiagnosis;
-
   message?: string;
 }
 
@@ -219,11 +207,9 @@ export async function generateAdvisory(
     `${API_BASE_URL}/api/v1/agriculture/advisory`,
     {
       method: "POST",
-
       headers: {
         "Content-Type": "application/json",
       },
-
       body: JSON.stringify(request),
     }
   );
@@ -263,33 +249,31 @@ export async function generateAdvisory(
 // IMPORTANT:
 // Do NOT manually set Content-Type.
 // Browser automatically creates:
+//
 // multipart/form-data; boundary=...
+//
+// IMPORTANT FIX:
+// This function now returns ONLY DiseaseDiagnosis.
+//
+// This keeps page.tsx state strongly typed:
+// DiseaseDiagnosis | null
 // ============================================================
 
 export async function diagnoseCropDisease(
   image: File,
   language: string,
   country: string = "India"
-): Promise<DiseaseDiagnosisResponse> {
+): Promise<DiseaseDiagnosis> {
   const formData = new FormData();
 
   // Crop / leaf image
-  formData.append(
-    "image",
-    image
-  );
+  formData.append("image", image);
 
   // Farmer language
-  formData.append(
-    "language",
-    language
-  );
+  formData.append("language", language);
 
   // Farmer country
-  formData.append(
-    "country",
-    country
-  );
+  formData.append("country", country);
 
   const response = await fetch(
     `${API_BASE_URL}/api/v1/agriculture/disease-diagnosis`,
@@ -305,10 +289,11 @@ export async function diagnoseCropDisease(
     }
   );
 
-  let data: any;
+  let data: DiseaseDiagnosisResponse;
 
   try {
-    data = await response.json();
+    data =
+      (await response.json()) as DiseaseDiagnosisResponse;
   } catch {
     throw new Error(
       "Backend returned an invalid diagnosis response."
@@ -317,13 +302,35 @@ export async function diagnoseCropDisease(
 
   if (!response.ok) {
     throw new Error(
-      data?.detail ||
-        data?.message ||
+      data?.message ||
         "Crop disease diagnosis failed."
     );
   }
 
-  return data as DiseaseDiagnosisResponse;
+  // ==========================================================
+  // IMPORTANT:
+  // Backend returns:
+  //
+  // {
+  //   success: true,
+  //   result: {
+  //     crop: "...",
+  //     possible_condition: "...",
+  //     ...
+  //   }
+  // }
+  //
+  // React state expects DiseaseDiagnosis, NOT the wrapper.
+  // ==========================================================
+
+  if (!data.result) {
+    throw new Error(
+      data?.message ||
+        "Disease diagnosis result was not returned by the backend."
+    );
+  }
+
+  return data.result;
 }
 
 // ============================================================
