@@ -844,7 +844,6 @@ export default function Home() {
 
       const diagnosis =
         response?.result ||
-        response?.diagnosis ||
         response;
 
       setDiagnosisResult(
