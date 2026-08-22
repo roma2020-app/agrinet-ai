@@ -1,3 +1,4 @@
+```python
 import logging
 from typing import Optional
 
@@ -46,11 +47,25 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        # ----------------------------------------------------
+        # LOCAL DEVELOPMENT
+        # ----------------------------------------------------
         "http://localhost:3000",
         "http://127.0.0.1:3000",
+        "http://localhost:3001",
         "http://localhost:8501",
         "http://127.0.0.1:8501",
-        "http://localhost:3001",
+
+        # ----------------------------------------------------
+        # PRODUCTION - RENDER FRONTEND
+        # ----------------------------------------------------
+        # IMPORTANT:
+        # Replace this with your actual Render frontend URL.
+        #
+        # Example:
+        # "https://agrinet-ai-frontend.onrender.com"
+        # ----------------------------------------------------
+        "https://YOUR-FRONTEND-NAME.onrender.com",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -124,19 +139,12 @@ class AgricultureRequest(BaseModel):
         ...,
         description="BRICS country code, e.g. IN, BR, RU, CN, ZA",
     )
-
     region: str
-
     farmer_id: str
-
     crop: str
-
     soil: SoilData
-
     weather: WeatherData
-
     satellite: SatelliteData
-
     language: str = "English"
 
 
@@ -216,7 +224,6 @@ def get_advisory(
     )
 
     try:
-
         # ====================================================
         # 1. SOIL / FARMER DATA
         # ====================================================
@@ -329,11 +336,9 @@ def get_advisory(
         )
 
         try:
-
             weather_result = get_weather(city)
 
         except Exception as weather_error:
-
             logger.exception(
                 "Weather tool exception | location=%s",
                 city,
@@ -372,11 +377,9 @@ def get_advisory(
         )
 
         try:
-
             satellite_result = get_satellite_data(city)
 
         except Exception as satellite_error:
-
             logger.exception(
                 "Satellite tool exception | location=%s",
                 city,
@@ -421,7 +424,6 @@ def get_advisory(
         )
 
         try:
-
             advisory = generate_advisory(
                 soil_data=soil_data,
                 weather_data=weather_data,
@@ -435,7 +437,6 @@ def get_advisory(
             )
 
         except Exception as gemini_error:
-
             logger.exception(
                 "Gemini advisory exception | farmer=%s",
                 farmer_id,
@@ -445,7 +446,9 @@ def get_advisory(
                 status_code=503,
                 detail={
                     "service": "Google Gemini",
-                    "message": "Agricultural advisory generation failed.",
+                    "message": (
+                        "Agricultural advisory generation failed."
+                    ),
                     "error": str(gemini_error),
                 },
             )
@@ -458,7 +461,6 @@ def get_advisory(
             "success": True,
             "network": "AgriNet AI",
             "service": "Farmer Agriculture Advisory",
-
             "farmer": {
                 "farmer_id": farmer_id,
                 "country": country_name,
@@ -467,7 +469,6 @@ def get_advisory(
                 "crop": crop,
                 "language": language,
             },
-
             "data_sources": {
                 "farmer_context": True,
                 "soil": True,
@@ -475,13 +476,9 @@ def get_advisory(
                 "satellite": True,
                 "ai_engine": "Google Gemini",
             },
-
             "soil": soil_data,
-
             "weather": weather_data,
-
             "satellite": satellite_data,
-
             "ai_advisory": advisory,
         }
 
@@ -489,7 +486,6 @@ def get_advisory(
         raise
 
     except Exception as e:
-
         logger.exception(
             "UNEXPECTED ERROR in GET /advisory/%s",
             farmer_id,
@@ -512,13 +508,10 @@ def get_advisory(
 @app.get("/brics/countries")
 @app.get("/api/v1/brics/countries")
 def brics_countries():
-
     try:
-
         return get_all_countries()
 
     except Exception as e:
-
         logger.exception(
             "BRICS countries lookup failed",
         )
@@ -538,9 +531,7 @@ def brics_countries():
 def brics_country(
     country_code: str,
 ):
-
     try:
-
         country_code = country_code.upper().strip()
 
         result = get_country(country_code)
@@ -548,11 +539,13 @@ def brics_country(
         if not isinstance(result, dict):
             raise HTTPException(
                 status_code=503,
-                detail="BRICS country service returned invalid response.",
+                detail=(
+                    "BRICS country service returned "
+                    "invalid response."
+                ),
             )
 
         if not result.get("success"):
-
             raise HTTPException(
                 status_code=404,
                 detail=result.get(
@@ -567,7 +560,6 @@ def brics_country(
         raise
 
     except Exception as e:
-
         logger.exception(
             "BRICS country lookup failed | code=%s",
             country_code,
@@ -575,7 +567,10 @@ def brics_country(
 
         raise HTTPException(
             status_code=500,
-            detail=f"Unable to retrieve country information: {str(e)}",
+            detail=(
+                "Unable to retrieve country information: "
+                f"{str(e)}"
+            ),
         )
 
 
@@ -585,14 +580,13 @@ def brics_country(
 # POST
 # /api/v1/agriculture/advisory
 #
-# This is the main BRICS interoperable endpoint.
+# Main BRICS interoperable endpoint.
 # ============================================================
 
 @app.post("/api/v1/agriculture/advisory")
 def agriculture_advisory(
     request: AgricultureRequest,
 ):
-
     logger.info(
         "POST agriculture advisory | "
         "country=%s | region=%s | farmer=%s | crop=%s | language=%s",
@@ -604,7 +598,6 @@ def agriculture_advisory(
     )
 
     try:
-
         # ====================================================
         # 1. NORMALIZE COUNTRY CODE
         # ====================================================
@@ -627,14 +620,15 @@ def agriculture_advisory(
         country_result = get_country(country_code)
 
         if not isinstance(country_result, dict):
-
             raise HTTPException(
                 status_code=503,
-                detail="BRICS country service returned invalid response.",
+                detail=(
+                    "BRICS country service returned "
+                    "invalid response."
+                ),
             )
 
         if not country_result.get("success"):
-
             raise HTTPException(
                 status_code=400,
                 detail=country_result.get(
@@ -658,9 +652,7 @@ def agriculture_advisory(
         # ====================================================
 
         soil_data = request.soil.model_dump()
-
         weather_data = request.weather.model_dump()
-
         satellite_data = request.satellite.model_dump()
 
         # ====================================================
@@ -668,23 +660,14 @@ def agriculture_advisory(
         # ====================================================
 
         agricultural_data = {
-
             "country": country_name,
-
             "country_code": country_code,
-
             "region": request.region,
-
             "farmer_id": request.farmer_id,
-
             "crop": request.crop,
-
             "language": request.language,
-
             "soil": soil_data,
-
             "weather": weather_data,
-
             "satellite": satellite_data,
         }
 
@@ -700,30 +683,19 @@ def agriculture_advisory(
         )
 
         try:
-
             advisory = generate_advisory(
-
                 soil_data=soil_data,
-
                 weather_data=weather_data,
-
                 satellite_data=satellite_data,
-
                 country=country_name,
-
                 region=request.region,
-
                 crop=request.crop,
-
                 language=request.language,
-
                 country_code=country_code,
-
                 farmer_id=request.farmer_id,
             )
 
         except Exception as gemini_error:
-
             logger.exception(
                 "Gemini failed in POST advisory",
             )
@@ -744,23 +716,14 @@ def agriculture_advisory(
         # ====================================================
 
         return {
-
             "success": True,
-
             "network": "AgriNet AI",
-
             "service": "Unified Agriculture Advisory",
-
             "country": country_name,
-
             "country_code": country_code,
-
             "region": request.region,
-
             "farmer_id": request.farmer_id,
-
             "crop": request.crop,
-
             "language": request.language,
 
             # ------------------------------------------------
@@ -768,37 +731,26 @@ def agriculture_advisory(
             # ------------------------------------------------
 
             "data_sources": {
-
                 "farmer_context": True,
-
                 "soil": True,
-
                 "weather": True,
-
                 "satellite": True,
             },
 
             "ai": {
-
                 "provider": "Google",
-
                 "model": "Gemini",
-
                 "capability": (
                     "Agricultural reasoning and recommendation"
                 ),
             },
 
             "interoperability": {
-
                 "standard_api": (
                     "/api/v1/agriculture/advisory"
                 ),
-
                 "country_code": country_code,
-
                 "localized_language": request.language,
-
                 "cross_border_ready": True,
             },
 
@@ -807,9 +759,7 @@ def agriculture_advisory(
             "ai_advisory": advisory,
 
             "regenerative_agriculture": {
-
                 "enabled": True,
-
                 "description": (
                     "Recommendations consider soil health, "
                     "water efficiency, crop resilience and "
@@ -822,9 +772,9 @@ def agriculture_advisory(
         raise
 
     except Exception as e:
-
         logger.exception(
-            "UNEXPECTED ERROR in POST /api/v1/agriculture/advisory",
+            "UNEXPECTED ERROR in POST "
+            "/api/v1/agriculture/advisory",
         )
 
         raise HTTPException(
@@ -845,20 +795,17 @@ def agriculture_advisory(
 async def disease_diagnosis(
     image: UploadFile = File(...),
 ):
-
     # ========================================================
     # 1. CONTENT TYPE
     # ========================================================
 
     if not image.content_type:
-
         raise HTTPException(
             status_code=400,
             detail="Image content type is missing.",
         )
 
     if not image.content_type.startswith("image/"):
-
         raise HTTPException(
             status_code=400,
             detail="Please upload a valid crop or leaf image.",
@@ -871,7 +818,6 @@ async def disease_diagnosis(
     image_bytes = await image.read()
 
     if not image_bytes:
-
         raise HTTPException(
             status_code=400,
             detail="Uploaded image is empty.",
@@ -884,7 +830,6 @@ async def disease_diagnosis(
     max_size = 20 * 1024 * 1024
 
     if len(image_bytes) > max_size:
-
         raise HTTPException(
             status_code=413,
             detail=(
@@ -898,21 +843,21 @@ async def disease_diagnosis(
     # ========================================================
 
     try:
-
         result = diagnose_crop_disease(
             image_bytes=image_bytes,
             mime_type=image.content_type,
         )
 
     except Exception as e:
-
         logger.exception(
             "Gemini Vision diagnosis failed",
         )
 
         raise HTTPException(
             status_code=503,
-            detail=f"Gemini Vision diagnosis failed: {str(e)}",
+            detail=(
+                f"Gemini Vision diagnosis failed: {str(e)}"
+            ),
         )
 
     # ========================================================
@@ -920,14 +865,14 @@ async def disease_diagnosis(
     # ========================================================
 
     if not isinstance(result, dict):
-
         raise HTTPException(
             status_code=503,
-            detail="Disease diagnosis returned invalid response.",
+            detail=(
+                "Disease diagnosis returned invalid response."
+            ),
         )
 
     if not result.get("success"):
-
         raise HTTPException(
             status_code=503,
             detail=result.get(
@@ -941,37 +886,24 @@ async def disease_diagnosis(
     # ========================================================
 
     return {
-
         "success": True,
-
         "network": "AgriNet AI",
-
         "service": (
             "Gemini Vision Crop Disease Diagnosis"
         ),
-
         "ai": {
-
             "provider": "Google",
-
             "model": "Gemini",
-
             "capability": (
                 "Multimodal crop image analysis"
             ),
         },
-
         "filename": image.filename,
-
         "content_type": image.content_type,
-
         "data_sources": {
-
             "crop_image": True,
-
             "computer_vision": True,
         },
-
         "diagnosis": result,
     }
 
@@ -982,62 +914,40 @@ async def disease_diagnosis(
 
 @app.get("/api/v1")
 def api_information():
-
     return {
-
         "network": "AgriNet AI",
-
         "description": (
             "Interoperable BRICS Digital Agriculture "
             "Intelligence Network"
         ),
-
         "ai": "Google Gemini",
-
         "endpoints": {
-
-            "health":
-                "/health",
-
-            "countries":
-                "/api/v1/brics/countries",
-
-            "country":
-                "/api/v1/brics/country/{country_code}",
-
-            "farmer_advisory":
-                "/advisory/{farmer_id}?language=English",
-
-            "unified_advisory":
-                "/api/v1/agriculture/advisory",
-
-            "disease_detection":
-                "/api/v1/agriculture/disease-diagnosis",
+            "health": "/health",
+            "countries": "/api/v1/brics/countries",
+            "country": "/api/v1/brics/country/{country_code}",
+            "farmer_advisory": (
+                "/advisory/{farmer_id}?language=English"
+            ),
+            "unified_advisory": (
+                "/api/v1/agriculture/advisory"
+            ),
+            "disease_detection": (
+                "/api/v1/agriculture/disease-diagnosis"
+            ),
         },
-
         "data_sources": [
-
             "Farmer Context",
-
             "Soil",
-
             "Weather",
-
             "Satellite",
-
             "Agricultural Data",
         ],
-
         "capabilities": [
-
             "Localized Agro Advisory",
-
             "Regenerative Agriculture Recommendations",
-
             "Crop Disease Detection",
-
             "Multilingual Support",
-
             "Cross-Border Agriculture Interoperability",
         ],
     }
+```
