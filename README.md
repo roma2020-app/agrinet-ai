@@ -1,3 +1,4 @@
+
 AgriNet AI is an India-first interoperable digital agriculture platform that uses Google Gemini and Vertex AI to turn farmer context, soil health, weather and satellite intelligence into localized agro-advisories. We also use Gemini Vision for crop disease screening and support regenerative farming recommendations. Our architecture separates the AI advisory engine from country-specific data models, allowing the same platform to scale from Indian states to Brazil, Russia, China and South Africa."
 
 AgriNet AI is an interoperable digital agriculture platform inspired by the BRICS AgriN initiative, designed to empower small and marginal farmers with real-time, localized, data-driven agricultural intelligence.
@@ -5,6 +6,14 @@ AgriNet AI is an interoperable digital agriculture platform inspired by the BRIC
 The platform combines Google Gemini/Vertex AI, satellite data, soil health analytics, weather forecasting, and AI-based crop disease detection to provide actionable recommendations for sustainable and regenerative farming.
 
 It is designed as a scalable Digital Public Good (DPG), enabling agricultural data, AI models, and advisory frameworks to be adapted across countries, languages, crops, and climatic conditions.
+
+Demo
+
+Video Demo: AgriNetAI — Regenerative Agricultural Intelligence
+Watch the AgriNet AI Demo on YouTube :https://youtu.be/qbG9wZ2gCts
+
+Live Prototype:
+AgriNet AI :https://agrinet-ai-frontend.onrender.com
 
 Key capabilities:
 
